@@ -193,7 +193,50 @@ First, add the ScrollReveal.js plugin to your page by including `<script src="ht
 
 Like we did when adding Velocity effects, we are going to include some extra JavaScript functions to the bottom of the `$.getJson` function in main.js. As these effects will be acting on HTML elements that will only be added after the JSON file is parsed, we need to make sure the scripts we write will only be read after parsing.
 
-First...
+First, lets make that submit button a bit more exciting. Use the function `ScrollReveal().reveal('#submit-container');` to make the button fade in as soon as a user scrolls to it. Reload the page and see if this works.
+
+`ScrollReveal()` lets the script know you are using ScrollReveal.js, and the `reveal()` method is telling the page what to do when it gets to that item. There are three other methods ScrollReveal.js includes - `clean`, `destroy`, and `sync` - but you usually won't need these so we won't worry about them. `#submit-container` is the ID for the submit button, but you can also specify elements using types and classes.
+
+The button should fade in, but you might have missed it, as it happens as soon as you get to the bottom of the quiz. Lets give the user a moment for their eyes to adjust. Replace the original funciton with:
+
+```javascript
+ScrollReveal().reveal('#submit-container', {delay:300});
+```
+
+Looking good! But we can do more. Lets make those questions more interesting. Add in:
+```javascript
+ScrollReveal().reveal('.question', {delay: 100});
+```
+
+Now each question will fade in as you get to it. But when you scroll back up, they are all still there. No fun! Add `reset: true` after `delay: 100`. Now the questions will fade in *every* time you scroll through them.
+
+Fading in is cool and all, but we can do more. Lets make those answers more interesting. Each answer is a `<label>` type so we can call on them by using `ScrollReveal().reveal('label')`. By setting an `interval` we can make each answer appear individually. Put this all together and we get:
+
+```javascript
+ScrollReveal().reveal('label', delay: 100, interval: 100);
+```
+
+Now lets add some movement. ScrollReveal makes this super easy to animate. Set an origin to determine where the element will start, and set a distance for the element to move. Your method should now look something like this:
+
+```javascript
+ScrollReveal().reveal('label', {delay: 100, interval: 100, origin: 'right', distance: '60px'};
+```
+
+This will work just fine, but with the magic of javascript we can clean this up just a bit. First, define a `let` called `labelReveal`. Move everything inbetween the curly braces in the function to the `let` you just defined. Now replace the curly-brace section with `labelReveal`. Your code should now look like:
+
+```javascript
+let labelReveal = {
+    delay: 100,
+    interval: 100,
+    origin: 'right',
+    distance: '60px'
+  };
+
+ScrollReveal().reveal('label', labelReveal);
+```
+
+And you're done! These are the basics for scroll reveal. There are lots of other options for animations and configurations you can find [here](https://scrollrevealjs.org/api/constructor.html).
+
 
 ## Last part: Adding a Results Chart :gem::gem::gem:
 * As of right now, the results modal tells you which character you are most like. But it doesn't tell you how much of each character you really are! Wouldn't it be cool to know what % of each character you are? Well we are going to put in a fun little chart to show you exactly that. yay. 

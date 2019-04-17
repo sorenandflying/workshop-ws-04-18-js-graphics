@@ -39,6 +39,7 @@ $.getJSON("data.json", function (data) {
     $(this).siblings().addClass('unselected');
     $(this).siblings().removeClass('selected');
     $(this).removeClass('unselected');
+    
     //tutorial
     $(this).velocity({
       scale: 1.2
